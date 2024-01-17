@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:/VsCode/vscode_file/c++/MinGW_x86_64-7.3.0-release-win32-seh-rt_v5-rev0/mingw64/bin/g++.exe"
+        }
+    ],
+    "version": 4
+}

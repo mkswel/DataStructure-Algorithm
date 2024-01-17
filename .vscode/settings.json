@@ -1,0 +1,4 @@
+{
+    "cmake.configureOnOpen": true,
+    "C_Cpp.default.compilerPath": "D:\\VsCode\\vscode_file\\c++\\MinGW_x86_64-7.3.0-release-win32-seh-rt_v5-rev0\\mingw64\\bin\\g++.exe"
+}
