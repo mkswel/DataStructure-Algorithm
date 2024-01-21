@@ -1,20 +1,44 @@
-#include<iostream> 
+#include<iostream>
+#include<cstring>
+#include<unordered_map>
+#include<vector>
 using namespace std;
-
-void re_dup(int A[], int &n){
-    int i = 0;
-    for(int j = 1; j < n; j++)
-        if(A[i] != A[j])A[++i] = A[j];
-    n = i + 1;
-}
-int f(int n){
-    return f(n+1);
-}
+typedef long long LL;
+const int MOD = 1000000007;
+const int N = 10010;
+LL f[N];
 int main(){
-    //int n = 15;
-    //int A[15] = {1,1,2,2,3,3,3,4,5,6,6,7,7,8,9};
-    //re_dup(A, n);
-    //for(int i = 0; i < n; i++)cout<<A[i]<<" ";
-    f(0);
-    return 0;
+    int Q;
+    cin>>Q;
+    while(Q--){
+        LL ans = 0;
+        string s, t;
+        cin>>s>>t;
+        int n = t.length();
+        memset(f, 0, sizeof(f));
+        f[0]=1;
+        unordered_map<char, vector<int>> strhash;
+        for(int i = 0; i < n; i++){
+            if(!strhash.count(t[i])){
+                vector<int> val;
+                val.push_back(i);
+                strhash.emplace(t[i], val);
+            }
+            else {
+                vector<int> &val = strhash.at(t[i]);
+                val.push_back(i);
+            }
+        }
+        for(int i = 0; i < s.length(); i++){
+            if(strhash.count(s[i])){
+                vector<int> &val=strhash.at(s[i]);
+                for(int j = val.size()-1; j >= 0; j--){
+                    int k = val[j];
+                    if(k<n-1)f[k+1]+=f[k];
+                    else ans+=f[k];
+                }
+            }
+        }
+        cout<<ans%MOD<<endl;
+    }
 }

@@ -1,107 +1,48 @@
-#include<algorithm>
-#include<queue>
+#include<iostream>
+#include<vector>
+#include<unordered_map>
 using namespace std;
+typedef struct TreeNode{
+    int data;
+    struct TreeNode *lchild, *rchild;
+}TreeNode;
+vector<int> postorder, inorder;
+unordered_map<int, int> hash1;
+TreeNode* CreateTree(int post = postorder.size()-1, int il = 0, int ir = inorder.size()){
+    int i = hash1.at(postorder[post]);
+    if(i>=il && i < ir){
+        TreeNode* p = new TreeNode;
+        p->data = postorder[post];
+        p->lchild = CreateTree(post-(ir-i), il, i);
+        p->rchild = CreateTree(post-1, i+1, ir);
+        return p;
+    }
+    return NULL;
+}
 
-const int N = 100010;
-int q[N];
-
+void preorder(TreeNode* T, int &ans){
+    if(!T)return;
+    ans = T->data;
+    preorder(T->lchild, ans);
+    preorder(T->rchild, ans);
+}
 int main(){
-    int hh = 0, tt = -1;
+    int n;
+    cin>>n;
     for(int i = 0; i < n; i++){
-        while(hh <= tt && q[hh] < i - k + 1)hh++;
-        while(hh <= tt && a[q[tt]] >= a[i])tt--;
-        q[++tt] = a[i];
-
+        int a;
+        scanf("%d", &a);
+        postorder.push_back(a);
     }
-}
-
-int e[N], ne[N], head, idx;
-
-void insert(int x){
-    e[idx] = x, ne[idx] = head, head = idx++;
-}
-
-int ef(int []q, int n, int x){
-    int l = 0, r = n - 1;
-    while(l < r){
-        int mid = l + r >> 1;
-        if(q[mid] >= x)r = mid;
-        else l = mid + 1;
+    for(int i = 0; i < n; i++){
+        int a;
+        scanf("%d", &a);
+        inorder.push_back(a);
+        hash1.emplace(a, inorder.size()-1);
     }
-    return l;
-
+    TreeNode* T = CreateTree();
+    int ans = 0;
+    preorder(T, ans);
+    cout<<ans;
+    return 0;
 }
-
-int primes[N], cnt;
-int st[N];
-
-int get_primes(int n){
-    for(int i = 2; i <= n; i++){
-        if(!st[i])primes[cnt++] = i;
-        for(int j = 0; primes[j] * i <= n; j++){
-            st[primes[j] * i] = true;
-            if(i % primes[j] == 0)break;
-        }
-    }
-    return cnt;
-}
-
-typedef long long LL;
-int quick_mi(int a, int k, int p){
-    int res = 0;
-    while(k){
-        if(k & 1)res = (LL)res * a % p;
-        k >> 1;
-        a = (LL)a * a % p;
-    }
-    return res;
-}
-
-
-typedef long long LL;
-int quick_mi(int a, int k, int p){
-    int res = 0;
-    while(k){
-        if(k & 1)res = (LL)res * a % p;
-        k >> 1;
-        a = (LL)a * a % p;
-    }
-    return res;
-}
-
-
-//BFS
-int map[M][M];
-int d[M][M];
-pair<int, int> q[N];
-
-int bfs(){
-    int hh = 0, tt = 0;
-    q[0] = {0, 0};
-    memset(d, -1, sizeof(d));
-    d[0][0] = 0;
-    while(hh <= tt){
-        auto t = q[hh++];
-        int dx[4] = {0, 1, 0, -1}, dy[4] = {1, 0, -1, 0};
-        for(int i = 0; i < 4; i++){
-            int x = t.first + dx[i], y = t.second + dy[i];
-            if(x >= 0 && x < M && y >= 0 && y < M && 
-                d[x][y] == -1 && map[x][y] = 1){
-                    q[++tt] = {x, y};
-                    d[x][y] = d[t.first][t.second] + 1;
-                }
-        }
-    }
-    return d[M - 1][M - 1];
-}
-
-//并查集
-int p[N];
-int find(int x){
-    if(p[x] != x)p[x] = find(p[x]);
-    return p[x];
-}
-//合并两个集合 p[x] = y;
-priority_queue<int> qu;
-unordered_map<int, int> hash;
-

@@ -12,7 +12,7 @@ void bubble_sort(int A[], int n){
     cout<<endl;
 }
 
-int re_dup(int A[], int n){
+int re_dup(int A[], int n){//有序序列去重
     int i = 0;
     for(int j = 1; j < n; j++)
         if(A[i] != A[j])A[++i] = A[j];

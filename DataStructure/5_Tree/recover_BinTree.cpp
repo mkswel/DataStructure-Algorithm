@@ -13,8 +13,10 @@ vector<ElemType> postorder, inorder, preorder, levorder;
 /**
  * 输出中序和后序确定的二叉树
  * 后序序列中的元素postorder[post]为树根，中序遍历序列inorder[]中区间[il, ir]为树的所有结点
+ * https://www.acwing.com/activity/content/problem/content/8775/  AcWing 5070  哈希表优化
 */
 BinTree CreateTree(int post, int il, int ir){
+    if(post<0)return NULL;
     for(int i = il; i <= ir; i++)
         if(inorder[i] == postorder[post]){
             BinTree p = new BinNode;
@@ -29,6 +31,7 @@ BinTree CreateTree(int post, int il, int ir){
  * 先序+中序
 */
 BinTree CreateTree2(int pre, int il, int ir){
+    if(pre >= preorder.size())return NULL;
     for(int i = il; i <= ir; i++)
         if(inorder[i] == preorder[pre]){
             BinTree p = new BinNode;

@@ -1,0 +1,20 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "\u4EFB\u52A1-test1",
+      "appliesTo": "Algorithm/test1.cpp",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "\u4EFB\u52A1-Algorithm",
+      "appliesTo": "Algorithm/",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "\u4EFB\u52A1-test1",
+      "appliesTo": "Algorithm/test1.cpp",
+      "type": "launch"
+    }
+  ]
+}
