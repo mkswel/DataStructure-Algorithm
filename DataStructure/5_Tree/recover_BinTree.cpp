@@ -2,6 +2,7 @@
 #include<vector>
 #include<queue>
 #include<stack>
+#include<unordered_map>
 using namespace std;
 typedef int ElemType;
 typedef struct BT{
@@ -28,33 +29,31 @@ BinTree CreateTree(int post, int il, int ir){
     return NULL;
 }
 /**
- * 先序+中序
+ * 先序+中序 分割成[il, ir)且哈希表优化   哈希表前提：树中无重复元素
+ * 预处理：要先将inorder数组存入哈希表，键值对{inorder[i], i}
 */
-BinTree CreateTree2(int pre, int il, int ir){
+unordered_map<int, int> order_hash;
+BinTree CreateTree2(int pre = 0, int il = 0, int ir = preorder.size()){
     if(pre >= preorder.size())return NULL;
-    for(int i = il; i <= ir; i++)
-        if(inorder[i] == preorder[pre]){
-            BinTree p = new BinNode;
-            p->data = preorder[pre];
-            p->lchild = CreateTree2(pre + 1, il, i - 1);
-            p->rchild = CreateTree2(pre + (i - il) + 1, i + 1, ir);
-            return p;
-        }
+    int i = order_hash.at(preorder[pre]);
+    if(i >= il && i < ir){
+        BinTree p = new BinNode;
+        p->data = preorder[pre];
+        p->lchild = CreateTree2(pre + 1, il, i);
+        p->rchild = CreateTree2(pre + i - il + 1, i + 1, ir);
+        return p;
+    }
     return NULL;
 }
 
 
 /**
  * 层序+中序
- * 优化思路：看层序里面的一个结点在中序里面是不是左右都有结点，如果是那后面连续两个结点
- * 分别是它的左右孩子，否则具体判断
- * 
- * Q用于存放中序序列中每次循环后左边界、根、右边界（四种情况：三者都不同；左与根相同；右与根相同；三者相同）
- * 循环遍历层序序列，将遍历到的点与Q的队头进行匹配：如果该点在根左，即为左孩子，在根右即为右孩子，然后视情况判断该点状态是否入队：若三者相同则无需入队
- * 
+ * 哈希表优化 时间复杂度O(n)
 */
+unordered_map<int, int> hash1;
 BinTree CreateTree3(vector<int> levorder, vector<int> inorder){
-    queue<pair<pair<int,int>,BinNode*>> Q;
+    queue<pair<pair<int,int>,pair<int, BinNode*>>> Q;
     int il=0, ir=inorder.size()-1;
     BinTree T;
     for(int i = 0; i < levorder.size(); i++){
@@ -62,21 +61,21 @@ BinTree CreateTree3(vector<int> levorder, vector<int> inorder){
         p->data=levorder[i];
         p->lchild=NULL;
         p->rchild=NULL;
-        if(!i)T=p,Q.push({{il, ir},p});
+        int j = hash1.at(p->data);
+        if(!i)T=p,Q.push({{il, ir},{j, p}});//暂存以p为根的树的中序左边界、右边界、p的中序下标以及p
         else if(!Q.empty()){
             il=Q.front().first.first, ir=Q.front().first.second;
-            BinTree root=Q.front().second;
-            int j;
-            for(j=il; j<=ir && root->data!=inorder[j]; j++)//从左边界遍历到右边界（实际上遍历到根即可）
-                if(levorder[i]==inorder[j])//找到则说明为左孩子，继续遍历完便于找到根的下标
-                    root->lchild=p;
-            if(root->lchild == p && j - 1 > il)
-                Q.push({{il, j-1},p});
-            else if(root->lchild != p){
-                root->rchild = p;
-                if(ir > j + 1)Q.push({{j+1, ir},p});
+            int iroot = Q.front().second.first;
+            BinTree root=Q.front().second.second;
+            if(j < iroot){//p是root的左孩子
+                root->lchild = p;
+                if(j>il || j<iroot-1)Q.push({{il, iroot-1},{j, p}});//如果j的中序序列左右依然有结点，说明p还有孩子
             }
-            if(root->data==inorder[il]||root->data==inorder[ir]||(root->rchild&&root->lchild))Q.pop();
+            else {
+                root->rchild = p;
+                if(ir>j || j>iroot+1)Q.push({{iroot+1, ir},{j, p}});
+            }  
+            if(iroot==il||iroot==ir||(root->rchild&&root->lchild))Q.pop();//根的孩子全部已更新则将根出队
         }
     }
     return T;
@@ -100,10 +99,10 @@ void show_Tree(BinTree T){//输出层序遍历
  * leetcode 106.
  */ 
 int main(){
-    int n = 7;
-    int levo[n] = {1,2,3,4,5,6,7};
-    int ino[n] = {4,2,5,1,6,3,7};
-    for(int i = 0; i < n; i++)levorder.push_back(levo[i]), inorder.push_back(ino[i]);
+    int n = 5;
+    int levo[n] = {3, 9, 20, 15, 7};
+    int ino[n] = {9, 3, 15, 20, 7};
+    for(int i = 0; i < n; i++)levorder.push_back(levo[i]), inorder.push_back(ino[i]), hash1.emplace(ino[i], i);;
     BinTree T = CreateTree3(levorder, inorder);
     show_Tree(T);
     return 0;
