@@ -43,11 +43,12 @@ void CommonAncestor(Tree T, int x, int y, int &tmpanc, int &num){
 }
 /**
  * 二叉链表存储结构
- * 寻找x和y的最小公共祖先（假设x是y的祖先，那最小公共祖先就是x的父结点）
+ * 寻找x和y的最小公共祖先
  * 力扣236
  * 
+ * 版本一：假设x是y的祖先，那最小公共祖先就是x的父结点
  * 函数返回树T内结点x或y的个数
- * find=0：没有找到公共祖先
+ * find=0：没有找到公共祖先 //初始为0
  *      1：找到了x或y中的第二个结点，此时公共祖先就是它的父结点
  *      2：找到最小公共祖先
  * 复杂度分析：对T进行一次后序遍历，最坏O(n)
@@ -55,9 +56,9 @@ void CommonAncestor(Tree T, int x, int y, int &tmpanc, int &num){
 int CommonAncestor(Tree T, int x, int y, int &find){
     if(!T)return 0;
     int left=0, right=0, root=0, sum=0;
-    left=CommonAncestor(T->lchild, x, y, find);
-    if(find<1)right=CommonAncestor(T->rchild, x, y, find);
-    if(find<2){
+    left=CommonAncestor(T->lchild, x, y, find); //左子树里的个数
+    if(find<1)right=CommonAncestor(T->rchild, x, y, find); //两个都没找到就再找右子树里的个数
+    if(find<2){//已经找到一个
         root = (T->data==x||T->data==y?1:0);
         sum = root+left+right;
         if(sum==2){
@@ -68,6 +69,20 @@ int CommonAncestor(Tree T, int x, int y, int &find){
             }
             else if(find==2)cout<<T->data;//找到x或y，要再找它的父结点
         }
+    }
+    return sum;
+}
+//版本二：假设x是y的祖先，那最小公共祖先就是x
+//find=false：未找到最小公共祖先; true：找到最小公共祖先
+int CommonAncestor2(Tree T, TNode* p, TNode* q, bool &find, TNode* &ans){
+    if(!T)return 0;
+    int left=0, right=0, root=0, sum=0;//左右根
+    left=CommonAncestor2(T->lchild, p, q, find, ans);
+    if(!find)right=CommonAncestor2(T->rchild, p, q, find, ans);
+    if(!find){
+        root=(T==p||T==q?1:0);
+        sum=left+right+root;
+        if(sum==2)find=true,ans=T;
     }
     return sum;
 }

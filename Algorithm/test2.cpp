@@ -1,34 +1,41 @@
 #include<iostream>
-#include<cstring>
+#include<set>
 using namespace std;
 const int N = 10010;
-int e[N], ne[N], h[N], idx;
 bool st[N];
-int res;
-void add(int a, int b){
-    e[idx]=b, ne[idx]=h[a], h[a]=idx++;
+set<int> primes;
+set<int> facai;
+//从8层开始，到20层（前10000最大18层）
+void dfs(int k, int n = 1){
+    if(!k){
+        facai.emplace(n);
+        return ;
+    }
+    for(auto prime:primes){
+        dfs(k-1, n * prime);
+    }
 }
-void dfs(int x, int d = 0){
-    res = max(res, d);
-    for(int i = h[x]; i != -1; i = ne[i]){//5  1  2  3
-        if(!st[e[i]]){
-            st[e[i]]=true;
-            dfs(x, d+1);
-            st[e[i]]=false;
+
+int main(){
+    for(int i = 2; i < N && primes.size() < 400; i++){
+        if(!st[i])primes.emplace(i);
+        for(auto j = primes.begin(); *j <= N / i; j++){
+            st[*j * i] = true;
+            if(i % *j == 0)break;
         }
     }
-}
-int main(){
-    memset(h, -1, sizeof(h));
-    int n, root;
-    cin>>n>>root;
-    for(int i = 0; i < n-1; i++){
-        int a, b;
-        scanf("%d%d", &a, &b);
-        add(a, b), add(b, a);
+    cout<<primes.size();
+    for(int i = 8; i < 20; i++)dfs(i);
+    int T;
+    cin>>T;
+    while(T--){
+        int n;
+        cin>>n;
+        for(auto k = facai.begin(); k != facai.end(); k++, n--){
+            if(!n){
+                cout<<*k<<endl;
+                break;
+            }
+        }
     }
-    st[root]=true;
-    dfs(root);
-    cout<<res;
-    return 0;
 }

@@ -44,6 +44,8 @@ void createTree2(int A[], int n, Tree &T, int k = 1){
         else {
             T = (Tree)malloc(sizeof(TNode));
             T->data = A[k];
+            T->lchild = NULL;
+            T->rchild = NULL;
         }
     }
     createTree2(A, n, T->lchild, k<<1);
