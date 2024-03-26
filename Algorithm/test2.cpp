@@ -16,6 +16,7 @@ void dfs(int k, int n = 1){
     }
 }
 
+
 int main(){
     for(int i = 2; i < N && primes.size() < 400; i++){
         if(!st[i])primes.emplace(i);

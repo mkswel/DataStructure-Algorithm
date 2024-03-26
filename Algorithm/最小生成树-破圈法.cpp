@@ -65,6 +65,8 @@ void dfs(VGraph &G, int v, int r, int &a, int &b, int &t, bool &p, int &MST){
  * 从vn开始继续递归下去，当边数=点数-1，终止
 */
 
+
+//测试方法一
 int main(){
     VGraph G;
     G.arcnum = 0, G.vexnum=N;
@@ -87,3 +89,4 @@ int main(){
     dfs(G, 0, 0, a, b, t, p, MST);
     cout<<MST<<endl;
 }
+

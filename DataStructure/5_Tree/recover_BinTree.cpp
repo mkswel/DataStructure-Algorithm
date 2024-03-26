@@ -28,6 +28,7 @@ BinTree CreateTree(int post, int il, int ir){
         }
     return NULL;
 }
+
 /**
  * 先序+中序 分割成[il, ir)且哈希表优化   哈希表前提：树中无重复元素
  * 预处理：要先将inorder数组存入哈希表，键值对{inorder[i], i}

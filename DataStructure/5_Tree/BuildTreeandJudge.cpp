@@ -116,18 +116,18 @@ void InOrder(Tree T){
     cout<<T->data<<" ";
     InOrder(T->rchild);
 }
-int main(){
-    int n = 32;
-    int A[n] = {-1, 31 ,9 ,12 ,5 ,1 ,17 ,29 ,4 ,15 ,2 ,11 ,8 ,30 ,22 ,16 ,25 ,26 ,10 ,6 ,28 ,19 ,27 ,20 ,18 ,14 ,21 ,3 ,24 ,13 ,23 ,7};
-    Tree T = NULL;
-    T = createTree(A, n);
-    InOrder(T);
-    cout<<endl;
-    cout<<JudgeTree(T)<<endl;
-    cout<<endl;
-    printTree(T);
-    return 0;
-}
+// int main(){
+//     int n = 32;
+//     int A[n] = {-1, 31 ,9 ,12 ,5 ,1 ,17 ,29 ,4 ,15 ,2 ,11 ,8 ,30 ,22 ,16 ,25 ,26 ,10 ,6 ,28 ,19 ,27 ,20 ,18 ,14 ,21 ,3 ,24 ,13 ,23 ,7};
+//     Tree T = NULL;
+//     T = createTree(A, n);
+//     InOrder(T);
+//     cout<<endl;
+//     cout<<JudgeTree(T)<<endl;
+//     cout<<endl;
+//     printTree(T);
+//     return 0;
+// }
 
 //以下是例子
 //n=16 {-1,1,2,3,4,5,-1,7,8,-1,10,11,-1,-1,14,15}
