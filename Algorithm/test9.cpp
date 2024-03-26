@@ -1,62 +1,44 @@
-#include <iostream>
-#include <cstring>
-#include <algorithm>
+/*
+1. 排序：输入n，有n组测试数据
 
+输入样例：
+
+2
+5 7 3 2 11 23 6 33
+9 8 5 2 1 3 0 4
+
+输出样例
+
+2 3 5 6 7 11 23 33
+
+0 1 2 3 4 5 8 9
+*/
+
+#include<iostream>
+#include<algorithm>
 using namespace std;
-const int N = 20;
-int A[N][N];
-int str[N];
-int n, dis,res = 0x3f3f3f3f;
-
-// void dfs(int u, int r, int dis = 0){
-// 	// str[u] = true;
-// 	if(u == 1 && r != 1){
-// 		res = min(res,dis);
-// 		return;
-// 	}
-	
-// 	for(int i = 1; i <= n; i ++){
-// 		if(A[u][i] != 0 && !str[i] && i != r){
-// 			dis += A[u][i];
-// 			str[u] = true;
-// 			str[1] = 0;
-// 			dfs(i,u, dis);
-// 			dis -=A[u][i];
-// 			str[u] = false;
-// 		}
-// 	}
-	
-// }
-void dfs(int &k, int v0, int v, int dis = 0){
-	int n = 4;
-	if(k == n){
-		if(v0 == v){
-			res = min(res,dis);
-			return ;
-		}
-	}
-	for(int i = 1; i <= n; i ++){
-		if(A[v][i] != 0 && !str[i]){
-			dis += A[v][i];
-			str[i] = true;
-			k++;
-			dfs(k, v0, i, dis);
-			dis -=A[v][i];
-			str[i] = false;
-			k--;
-		}
-	}
-}
-
+const int N = 100;
+int A[N];
 int main(){
-	cin >> n;
-	
-	for(int i = 1; i <= n; i ++){
-		for(int j = 1; j <= n; j ++)cin>> A[i][j];
-	}
-	int k  = 0;
-	dfs(k, 1, 1);
-	
-	cout<< res;
-	return 0;
+    int T;
+    cin>>T;
+    while(T--){
+        string str;
+        getline(cin, str);
+        int n = 0, tmp = 0;
+        for(int i = 0; i < str.length(); i++){
+            if(str[i] = ' '){
+                A[n++] = tmp;
+                tmp = 0;
+            }
+            else{
+                tmp = tmp * 10 + str[i] - '0';
+            }
+        }
+        A[n] = tmp;
+        sort(A, A+n);
+        for(int i = 0; i < n; i++)printf("%d ", A[i]);
+        cout<<endl;
+    }
+    system("pause");
 }

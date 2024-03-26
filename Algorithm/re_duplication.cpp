@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-//双指针去重 时间O(n), 空间O(n)
+//冒泡 时间O(n), 空间O(n)
 void bubble_sort(int A[], int n){
     for(int i = 0; i < n; i++){
         bool res = true;
@@ -14,9 +14,8 @@ void bubble_sort(int A[], int n){
 
 int re_dup(int A[], int n){//有序序列去重
     int i = 0;
-    for(int j = 1; j < n; j++)
-        if(A[i] != A[j])A[++i] = A[j];
-    return i;
+    for(int j = 1; j < n; j++)if(A[i] != A[j])A[++i] = A[j];
+    return i+1;
 }
 
 int main(){

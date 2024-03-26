@@ -49,9 +49,8 @@ int main()
             res+=w;
             cnt++;
         }
-        if(cnt<n-1)puts("impossible"); //如果边数小于点数，说明集合不连通，没有最小生成树
-        else printf("%d\n",res);
-        return 0;
-
     }
+    if(cnt<n-1)puts("impossible"); //如果边数小于点数，说明集合不连通，没有最小生成树
+    else printf("%d\n",res);
+    return 0;
 }

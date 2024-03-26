@@ -31,7 +31,6 @@ struct Range        //结构体表示每个区间(便于排序)
         return r<W.r;
     }
 
-
 }range[N];
 
 int main()
@@ -51,8 +50,8 @@ int main()
             res++;
             ed=range[i].r;
        }
-       printf("%d\n",res);
-       return 0;
+    printf("%d\n",res);
+    return 0;
 }
 
 
