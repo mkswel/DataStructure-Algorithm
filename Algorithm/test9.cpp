@@ -1,44 +1,37 @@
-/*
-1. 排序：输入n，有n组测试数据
-
-输入样例：
-
-2
-5 7 3 2 11 23 6 33
-9 8 5 2 1 3 0 4
-
-输出样例
-
-2 3 5 6 7 11 23 33
-
-0 1 2 3 4 5 8 9
-*/
-
 #include<iostream>
-#include<algorithm>
+#include<cmath>
 using namespace std;
-const int N = 100;
-int A[N];
+const int N = 30;
+int g[N][N];
+bool st[N];
+int n;
+void DFS(int &ans, int &k, int &res, int v = 0){
+	if(k == n){
+		if(v == n-1){
+			ans = min(ans, res);
+			return;	
+		}
+	}
+	if(v == n-1 && k < n)return;
+	for(int i = 0; i < n; i++){
+		if(!st[i] && g[v][i]){
+			st[i]=true, k++;
+			res += g[v][i];
+			DFS(ans, k, res, i);
+			res -= g[v][i];
+			st[i]=false, k--;	
+		}	
+	}
+}
+
 int main(){
-    int T;
-    cin>>T;
-    while(T--){
-        string str;
-        getline(cin, str);
-        int n = 0, tmp = 0;
-        for(int i = 0; i < str.length(); i++){
-            if(str[i] = ' '){
-                A[n++] = tmp;
-                tmp = 0;
-            }
-            else{
-                tmp = tmp * 10 + str[i] - '0';
-            }
-        }
-        A[n] = tmp;
-        sort(A, A+n);
-        for(int i = 0; i < n; i++)printf("%d ", A[i]);
-        cout<<endl;
-    }
-    system("pause");
+	cin>>n;
+	for(int i = 0; i < n; i++)
+	    for(int j = 0; j < n; j++)
+	        cin>>g[i][j];
+	int ans = 2e9, res = 0, k = 0;
+	st[0]=1;
+	DFS(ans, k, res);
+	cout<<ans<<endl;
+	return 0;
 }

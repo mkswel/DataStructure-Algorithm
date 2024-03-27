@@ -49,7 +49,7 @@ int main()
 //问题2
 
 
-/*法一：深搜   时间n*n!
+/*法一：回溯深搜   时间n*n!
 */
 #include<iostream>
 using namespace std;

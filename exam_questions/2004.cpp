@@ -4,7 +4,8 @@
 using namespace std;
 
 /**
- * 哈密顿回路
+ * 哈密顿回路 O(n*n!)
+ * 相关问题：https://codeforces.com/problemset/problem/329/E   acwing：91. 最短Hamilton路径
 */
 typedef struct{
     bool st[MaxVexSize]; //记录某点是否访问过
